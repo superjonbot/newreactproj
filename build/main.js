@@ -1,9 +1,19 @@
-import app from '../build/app';
-import expect from 'expect';
-import React from 'react';
-import ReactDOM from 'react-dom';
-app.getResults('aetv').then(entries => {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _app = _interopRequireDefault(require("../build/app"));
+
+var _expect = _interopRequireDefault(require("expect"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
+_app.default.getResults('aetv').then(function (entries) {
   console.log('done:' + entries.length);
-  ReactDOM.render(React.createElement("h1", null, "Hello"), document.getElementById('root'));
+
+  _reactDom.default.render(_react.default.createElement("h1", null, "react inject test"), document.getElementById('root'));
 });
-expect(app.hello()).toBe("hello");
+
+(0, _expect.default)(_app.default.hello()).toBe("hello");

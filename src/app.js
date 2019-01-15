@@ -1,12 +1,5 @@
 const fetch = require('node-fetch');
 
-// let settings={
-//     _feedURL:'https://feeds.video.aetnd.com/api/${brand}/videos?filter%5BvideoType%5D=Episode&filter%5BisBehindWall%5D=false&perpage=500',
-//     _endPoint: 'http://sandbox-cloudapi.imrworldwide.com/nmapi/v2/{{appid}}/{{sessionID}}/a?b=',
-//     _sessionID: Date.now() + String(Math.random() * 1000000 >> 0),
-//     _brands:['aetv','history','lifetime','fyi']
-// }
-
 module.exports = {
     defaults:{
         _feedURL:'https://feeds.video.aetnd.com/api/${brand}/videos?filter%5BvideoType%5D=Episode&filter%5BisBehindWall%5D=false&perpage=500',

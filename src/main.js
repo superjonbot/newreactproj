@@ -7,7 +7,7 @@ app.getResults('aetv').then((entries)=>{
     console.log('done:'+entries.length)
 
     ReactDOM.render(
-        <h1>Hello</h1>,
+        <h1>react inject test</h1>,
         document.getElementById('root')
     )
 
