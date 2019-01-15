@@ -14,45 +14,39 @@ var _reactDom = _interopRequireDefault(require("react-dom"));
 
 var _redux = require("redux");
 
-var Counter = function Counter(_ref) {
-  var value = _ref.value,
-      onIncrement = _ref.onIncrement,
-      onDecrement = _ref.onDecrement;
-  return _react.default.createElement("div", null, _react.default.createElement("h1", null, value), _react.default.createElement("button", {
-    onClick: onIncrement
-  }, "[+]"), _react.default.createElement("button", {
-    onClick: onDecrement
-  }, "[-]"));
-};
+/*
+let store = createStore((state = {testcount:0}, action) => {
+    switch (action.type) {
+        case 'INCREMENT':
+            return Object.assign(state,{testcount:state.testcount+1})  // must return a new object
+        case 'DECREMENT':
+            return Object.assign(state,{testcount:state.testcount-1})
+        default:
+            return state
+    }
+}) //create test redux*/
+var store = {}; //placeholder for redux
+// const App = ({value, onIncrement, onDecrement})=>(
+//     <div>
+//         <h1>{value}</h1>
+//         <button onClick={onIncrement}>[+]</button>
+//         <button onClick={onDecrement}>[-]</button>
+//     </div>
+// )
 
-var store = (0, _redux.createStore)(function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-    testcount: 2
-  };
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case 'INCREMENT':
-      return Object.assign(state, {
-        testcount: state.testcount + 1
-      });
-    // must return a new object
-
-    case 'DECREMENT':
-      return Object.assign(state, {
-        testcount: state.testcount - 1
-      });
-
-    default:
-      return state;
+var htmlTemplates = {
+  App: function App(_ref) {
+    var value = _ref.value,
+        onIncrement = _ref.onIncrement,
+        onDecrement = _ref.onDecrement;
+    return _react.default.createElement("div", null, _react.default.createElement("h1", null, value), _react.default.createElement("button", {
+      onClick: onIncrement
+    }, "[+]"), _react.default.createElement("button", {
+      onClick: onDecrement
+    }, "[-]"));
   }
-}); //create test redux
-
-store.subscribe(function () {
-  module.exports.renderPage();
-  var status = store.getState();
-  console.log(status.testcount);
-});
+};
+var App = htmlTemplates.App;
 module.exports = {
   defaults: {
     _feedURL: 'https://feeds.video.aetnd.com/api/${brand}/videos?filter%5BvideoType%5D=Episode&filter%5BisBehindWall%5D=false&perpage=500',
@@ -109,7 +103,7 @@ module.exports = {
     };
   }(),
   renderPage: function renderPage() {
-    _reactDom.default.render(_react.default.createElement(Counter, {
+    _reactDom.default.render(_react.default.createElement(App, {
       value: store.getState().testcount,
       onIncrement: function onIncrement() {
         return store.dispatch({
@@ -122,18 +116,57 @@ module.exports = {
         });
       }
     }), document.getElementById('root'));
-  }
-  /*,
-    reduxStore : (state = {testcount:2}, action) => {
-     switch (action.type) {
-         case 'INCREMENT':
-             return Object.assign(state,{testcount:state.testcount+1})  // must return a new object
-         case 'DECREMENT':
-             return Object.assign(state,{testcount:state.testcount-1})
-         default:
-             return state
-     }
-  }
-  */
+  },
+  initStore: function initStore() {
+    store = (0, _redux.createStore)(module.exports.reduxStore); //create test redux
 
+    store.subscribe(function () {
+      module.exports.renderPage();
+      var status = store.getState();
+      console.log(status.testcount);
+    });
+  },
+  reduxStore: function reduxStore() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+      testcount: 2
+    };
+    var action = arguments.length > 1 ? arguments[1] : undefined;
+
+    switch (action.type) {
+      case 'INCREMENT':
+        return Object.assign(state, {
+          testcount: state.testcount + 1
+        });
+      // must return a new object
+
+      case 'DECREMENT':
+        return Object.assign(state, {
+          testcount: state.testcount - 1
+        });
+
+      default:
+        return state;
+    }
+  }
 };
+/*
+
+
+let store = createStore(module.exports.reduxStore) //create test redux
+
+
+
+
+
+
+
+
+
+
+store.subscribe(() =>
+    {
+        module.exports.renderPage();
+        const status=store.getState();
+        console.log(status.testcount)}
+)
+*/
