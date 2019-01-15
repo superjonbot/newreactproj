@@ -1,0 +1,42 @@
+# General
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+#etc
+
+.DS_Store
+.idea
+.idea/*
+
+#node_docker/node/*   BELOW is built by buildENV
+/node_modules/*
+challenge/node_modules/*
+ARCHIVE/*
+!ARCHIVE/.gitignore
+!ARCHIVE/.gitkeep
+
+#Ignore gpgd files
+_config.sh
+SOURCE/sql/backup.sql
+SOURCE/html/wp/wp-config.php
+wget.log
