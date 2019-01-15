@@ -1,4 +1,6 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 module.exports = {
     defaults:{
@@ -24,7 +26,32 @@ module.exports = {
             console.error(error);
 
         }
+    },
+
+
+    renderPage : () => {
+        ReactDOM.render(
+            <h1>react injected</h1>,
+            document.getElementById('root')
+        )
+    },
+
+
+    reduxStore : (state = 0, action) => {
+        switch (action.type) {
+            case 'INCREMENT':
+                return state + 1
+            case 'DECREMENT':
+                return state - 1
+            default:
+                return state
+        }
     }
+
+
+
+
+
 
 };
 

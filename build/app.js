@@ -6,7 +6,11 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var fetch = require('node-fetch');
+var _nodeFetch = _interopRequireDefault(require("node-fetch"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
 
 module.exports = {
   defaults: {
@@ -33,7 +37,7 @@ module.exports = {
               _context.prev = 0;
               uri = this.feedURI(brand);
               _context.next = 4;
-              return fetch(uri);
+              return (0, _nodeFetch.default)(uri);
 
             case 4:
               response = _context.sent;
@@ -62,5 +66,23 @@ module.exports = {
     return function getResults(_x) {
       return _getResults.apply(this, arguments);
     };
-  }()
+  }(),
+  renderPage: function renderPage() {
+    _reactDom.default.render(_react.default.createElement("h1", null, "react injected"), document.getElementById('root'));
+  },
+  reduxStore: function reduxStore() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var action = arguments.length > 1 ? arguments[1] : undefined;
+
+    switch (action.type) {
+      case 'INCREMENT':
+        return state + 1;
+
+      case 'DECREMENT':
+        return state - 1;
+
+      default:
+        return state;
+    }
+  }
 };
