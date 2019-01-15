@@ -12,6 +12,47 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
+var _redux = require("redux");
+
+var Counter = function Counter(_ref) {
+  var value = _ref.value,
+      onIncrement = _ref.onIncrement,
+      onDecrement = _ref.onDecrement;
+  return _react.default.createElement("div", null, _react.default.createElement("h1", null, value), _react.default.createElement("button", {
+    onClick: onIncrement
+  }, "[+]"), _react.default.createElement("button", {
+    onClick: onDecrement
+  }, "[-]"));
+};
+
+var store = (0, _redux.createStore)(function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    testcount: 2
+  };
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case 'INCREMENT':
+      return Object.assign(state, {
+        testcount: state.testcount + 1
+      });
+    // must return a new object
+
+    case 'DECREMENT':
+      return Object.assign(state, {
+        testcount: state.testcount - 1
+      });
+
+    default:
+      return state;
+  }
+}); //create test redux
+
+store.subscribe(function () {
+  module.exports.renderPage();
+  var status = store.getState();
+  console.log(status.testcount);
+});
 module.exports = {
   defaults: {
     _feedURL: 'https://feeds.video.aetnd.com/api/${brand}/videos?filter%5BvideoType%5D=Episode&filter%5BisBehindWall%5D=false&perpage=500',
@@ -68,21 +109,31 @@ module.exports = {
     };
   }(),
   renderPage: function renderPage() {
-    _reactDom.default.render(_react.default.createElement("h1", null, "react injected"), document.getElementById('root'));
-  },
-  reduxStore: function reduxStore() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var action = arguments.length > 1 ? arguments[1] : undefined;
-
-    switch (action.type) {
-      case 'INCREMENT':
-        return state + 1;
-
-      case 'DECREMENT':
-        return state - 1;
-
-      default:
-        return state;
-    }
+    _reactDom.default.render(_react.default.createElement(Counter, {
+      value: store.getState().testcount,
+      onIncrement: function onIncrement() {
+        return store.dispatch({
+          type: 'INCREMENT'
+        });
+      },
+      onDecrement: function onDecrement() {
+        return store.dispatch({
+          type: 'DECREMENT'
+        });
+      }
+    }), document.getElementById('root'));
   }
+  /*,
+    reduxStore : (state = {testcount:2}, action) => {
+     switch (action.type) {
+         case 'INCREMENT':
+             return Object.assign(state,{testcount:state.testcount+1})  // must return a new object
+         case 'DECREMENT':
+             return Object.assign(state,{testcount:state.testcount-1})
+         default:
+             return state
+     }
+  }
+  */
+
 };
