@@ -2,6 +2,25 @@
 //var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
 //const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+module.exports = {
+    optimization: {
+        minimizer: [
+            // we specify a custom UglifyJsPlugin here to get source maps in production
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                uglifyOptions: {
+                    compress: false,
+                    ecma: 6,
+                    mangle: true
+                },
+                sourceMap: true
+            })
+        ]
+    }
+};
 
 var cachebuster = Math.round(new Date().getTime() / 1000);
 
@@ -46,12 +65,26 @@ module.exports = {
             filename: './build/css/page.css',
             allChunks: true,
         }),*/
-        new webpack.DefinePlugin({
+
+
+/*        new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
             }
+        })*/
+
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
         })
 
+/*
+
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        }),
+        new UglifyJsPlugin()
+
+*/
 
     ],
     module:{
