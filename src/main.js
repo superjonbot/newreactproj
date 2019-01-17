@@ -22,7 +22,7 @@ let reduxReducer = (state = {testcount:2,counter:0}, action) => {
     }
 }
 
-//SET SUBSCIBE
+//SET SUBSCRIBE
 let store = createStore(reduxReducer,devToolsEnhancer()) //remove devToolsEnhancer if not debugging redux
 store.subscribe(() =>
     {
@@ -102,7 +102,7 @@ setInterval(()=>{
 },1000)
 
 
-
+//test ajax
 app.getResults('aetv').then((entries)=>{
     console.log('done:'+entries.length)
 });
@@ -110,5 +110,5 @@ app.getResults('aetv').then((entries)=>{
 //quick error check
 expect(app.hello()).toBe("hello")
 
-
+//start
 renderPage()
