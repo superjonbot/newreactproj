@@ -12,6 +12,8 @@ view webpack: npm run open
 
 build both & echo node: npm run build
 
+debugging:
+react debugging: $>react-devtools &  redux debugging: http://remotedev.io/local/
 
 TODO:
 
