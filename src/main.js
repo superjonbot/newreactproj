@@ -48,6 +48,7 @@ let testcount_rdc = (testcount=5, action) => {
 }
 
 const combinedReducers = combineReducers({
+    //STATE FIELDS
     counter:counter_rdc,
     testcount:testcount_rdc
 })
