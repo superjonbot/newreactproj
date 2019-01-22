@@ -5,11 +5,14 @@ import {createStore} from "redux";
 
 import devToolsEnhancer from 'remote-redux-devtools';  //remove if not debugging redux
 import ReactDOM from "react-dom";
+import deepfreeze from "deep-freeze"
+
 
 console.log('react debugging: $>react-devtools &  redux debugging: http://remotedev.io/local/')
 
 //REDUX REDUCER
 let reduxReducer = (state = {testcount:2,counter:0}, action) => {
+    deepfreeze(state,action)
     switch (action.type) {
         case 'INCREMENT':
             return Object.assign({},state,{testcount:state.testcount+1})  // must return a new object
@@ -42,7 +45,6 @@ class Valuedisplay extends React.Component {
         return (<h1>{value}</h1>)
     }
 }
-
 class App extends React.Component {
     constructor(props) {
         super(props);

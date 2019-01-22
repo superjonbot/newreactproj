@@ -9495,6 +9495,8 @@ var _remoteReduxDevtools = _interopRequireDefault(__webpack_require__(345));
 
 var _reactDom = _interopRequireDefault(__webpack_require__(593));
 
+var _deepFreeze = _interopRequireDefault(__webpack_require__(599));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -9525,6 +9527,7 @@ var reduxReducer = function reduxReducer() {
     counter: 0
   };
   var action = arguments.length > 1 ? arguments[1] : undefined;
+  (0, _deepFreeze.default)(state, action);
 
   switch (action.type) {
     case 'INCREMENT':
@@ -9546,7 +9549,7 @@ var reduxReducer = function reduxReducer() {
     default:
       return state;
   }
-}; //SET SUBSCIBE
+}; //SET SUBSCRIBE
 
 
 var store = (0, _redux.createStore)(reduxReducer, (0, _remoteReduxDevtools.default)()); //remove devToolsEnhancer if not debugging redux
@@ -9672,14 +9675,15 @@ setInterval(function () {
   store.dispatch({
     type: 'COUNTER'
   });
-}, 1000);
+}, 1000); //test ajax
 
 _app.default.getResults('aetv').then(function (entries) {
   console.log('done:' + entries.length);
 }); //quick error check
 
 
-(0, _expect.default)(_app.default.hello()).toBe("hello");
+(0, _expect.default)(_app.default.hello()).toBe("hello"); //start
+
 renderPage();
 
 /***/ }),
@@ -63580,6 +63584,26 @@ exports.unstable_subscribe = unstable_subscribe;
 exports.unstable_unsubscribe = unstable_unsubscribe;
   })();
 }
+
+
+/***/ }),
+/* 599 */
+/***/ (function(module, exports) {
+
+module.exports = function deepFreeze (o) {
+  Object.freeze(o);
+
+  Object.getOwnPropertyNames(o).forEach(function (prop) {
+    if (o.hasOwnProperty(prop)
+    && o[prop] !== null
+    && (typeof o[prop] === "object" || typeof o[prop] === "function")
+    && !Object.isFrozen(o[prop])) {
+      deepFreeze(o[prop]);
+    }
+  });
+  
+  return o;
+};
 
 
 /***/ })
