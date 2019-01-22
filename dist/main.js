@@ -9519,12 +9519,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-console.log('react debugging: $>react-devtools &  redux debugging: http://remotedev.io/local/'); //REDUX REDUCER
+console.log('react debugging: $>react-devtools &  redux debugging: http://remotedev.io/local/'); //REDUX REDUCER (all in one)
 
-var reduxReducer = function reduxReducer() {
+var allinoneReducer = function allinoneReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-    testcount: 2,
-    counter: 0
+    counter: 1000,
+    testcount: 200
   };
   var action = arguments.length > 1 ? arguments[1] : undefined;
   (0, _deepFreeze.default)(state, action);
@@ -9549,14 +9549,56 @@ var reduxReducer = function reduxReducer() {
     default:
       return state;
   }
-}; //SET SUBSCRIBE
+}; //REDUX REDUCER (split)
 
 
-var store = (0, _redux.createStore)(reduxReducer, (0, _remoteReduxDevtools.default)()); //remove devToolsEnhancer if not debugging redux
+var counter_rdc = function counter_rdc() {
+  var counter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case 'COUNTER':
+      return counter + 1;
+    // must return a new object
+
+    default:
+      return counter;
+  }
+};
+
+var testcount_rdc = function testcount_rdc() {
+  var testcount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 5;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case 'INCREMENT':
+      return testcount + 1;
+    // must return a new object
+
+    case 'DECREMENT':
+      return testcount - 1;
+    // case 'COUNTER':
+    //     return reduxReducer_counter(state,action)//Object.assign({},state,{counter:state.counter+1})
+
+    default:
+      return testcount;
+  }
+};
+
+var combinedReducers = (0, _redux.combineReducers)({
+  counter: counter_rdc,
+  testcount: testcount_rdc
+}); //CREATE STORE
+//let store = createStore(allinoneReducer,devToolsEnhancer()) //remove devToolsEnhancer if not debugging redux
+
+var store = (0, _redux.createStore)(combinedReducers, (0, _remoteReduxDevtools.default)()); //remove devToolsEnhancer if not debugging redux
+//SET SUBSCRIBE
 
 store.subscribe(function () {
+  console.log("State: ", store.getState());
   renderPage();
-}); //START COMPONENTS
+}); //console.log('Initial State');
+//START COMPONENTS
 
 var Valuedisplay =
 /*#__PURE__*/

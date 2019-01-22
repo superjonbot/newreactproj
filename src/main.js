@@ -1,7 +1,7 @@
 import app from '../build/app';
 import expect from 'expect';
 import React from 'react';
-import {createStore} from "redux";
+import {createStore,combineReducers} from "redux";
 
 import devToolsEnhancer from 'remote-redux-devtools';  //remove if not debugging redux
 import ReactDOM from "react-dom";
@@ -10,9 +10,9 @@ import deepfreeze from "deep-freeze"
 
 console.log('react debugging: $>react-devtools &  redux debugging: http://remotedev.io/local/')
 
-//REDUX REDUCER
-let reduxReducer = (state = {testcount:2,counter:0}, action) => {
-    deepfreeze(state,action)
+//REDUX REDUCER (all in one)
+let allinoneReducer = (state = {counter:1000,testcount:200}, action) => {
+    deepfreeze(state,action);
     switch (action.type) {
         case 'INCREMENT':
             return Object.assign({},state,{testcount:state.testcount+1})  // must return a new object
@@ -25,13 +25,50 @@ let reduxReducer = (state = {testcount:2,counter:0}, action) => {
     }
 }
 
+//REDUX REDUCER (split)
+let counter_rdc = (counter=2, action) => {
+    switch (action.type) {
+        case 'COUNTER':
+            return counter+1  // must return a new object
+        default:
+            return counter
+    }
+}
+let testcount_rdc = (testcount=5, action) => {
+        switch (action.type) {
+        case 'INCREMENT':
+            return testcount+1  // must return a new object
+        case 'DECREMENT':
+            return testcount-1
+        // case 'COUNTER':
+        //     return reduxReducer_counter(state,action)//Object.assign({},state,{counter:state.counter+1})
+        default:
+            return testcount
+    }
+}
+
+const combinedReducers = combineReducers({
+    counter:counter_rdc,
+    testcount:testcount_rdc
+})
+
+
+//CREATE STORE
+
+//let store = createStore(allinoneReducer,devToolsEnhancer()) //remove devToolsEnhancer if not debugging redux
+let store = createStore(combinedReducers,devToolsEnhancer()) //remove devToolsEnhancer if not debugging redux
+
 //SET SUBSCRIBE
-let store = createStore(reduxReducer,devToolsEnhancer()) //remove devToolsEnhancer if not debugging redux
 store.subscribe(() =>
     {
+        console.log("State: ",store.getState());
         renderPage();
         }
 )
+
+//console.log('Initial State');
+
+
 
 //START COMPONENTS
 class Valuedisplay extends React.Component {
